@@ -34,4 +34,8 @@ public class EmpServiceImpl implements EmpService {
         List<Emp> emps = empDao.findAll();
         return emps;
     }
+
+    public Emp findById(Integer id) {
+        return null;
+    }
 }
