@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<context:component-scan base-package="com.zzc"/>
+	<bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/emp?&amp;useSSL=false&amp;serverTimezone=UTC" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+	</bean>
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.zzc.dao"/>
+	</bean>
+	<!-- 使用配置实现Spring事务 -->
+	<!-- 声明事务管理组件 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 代表数据库的事务 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 开启Spring事务注解扫描 -->
+	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
+<!--	&lt;!&ndash; 声明事务范围及类型 &ndash;&gt;-->
+<!--	<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+<!--		<tx:attributes>-->
+<!--			&lt;!&ndash; 对于查询方法是只读的 &ndash;&gt;-->
+<!--			<tx:method name="find*" read-only="true"/>-->
+<!--			&lt;!&ndash; 对于添加方法，传播机制是REQUIRED 遇见异常就事务回滚 &ndash;&gt;-->
+<!--			<tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>-->
+<!--			&lt;!&ndash; 对于修改方法，传播机制是REQUIRED 遇见异常就事务回滚 &ndash;&gt;-->
+<!--			<tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>-->
+<!--			&lt;!&ndash; 对于删除方法，传播机制是REQUIRED 遇见异常就事务回滚 &ndash;&gt;-->
+<!--			<tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>-->
+<!--		</tx:attributes>-->
+<!--	</tx:advice>-->
+<!--	<aop:config proxy-target-class="true">-->
+<!--		<aop:advisor advice-ref="txAdvice" pointcut="within(com.zzc.service..*)"/>-->
+<!--	</aop:config>-->
+</beans>
+
+
+
+
+
+
+
+
+
+
