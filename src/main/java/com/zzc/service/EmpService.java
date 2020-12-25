@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface EmpService {
     void insertEmp(Emp emp) throws IOException;
-    List<Emp> findAll();//kjgkj
+    List<Emp> findAll();//修改
 }
